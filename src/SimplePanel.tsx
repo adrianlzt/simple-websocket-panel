@@ -1,12 +1,50 @@
 import React, { PureComponent } from 'react';
 import { PanelProps } from '@grafana/data';
 import { SimpleOptions } from 'types';
+import { Button,FullWidthButtonContainer } from '@grafana/ui';
 
 interface Props extends PanelProps<SimpleOptions> {}
 
 export class SimplePanel extends PureComponent<Props> {
+  state = {
+    name: 'echo,',
+    messages: [],
+    message: '',
+  }
+
+  // TODO: change server dynamically when it is modified on the editor
+  ws = new WebSocket(this.props.options.wss_server)
+
+  componentDidMount() {
+    this.ws.onopen = () => {
+      // on connecting, do nothing but log it to the console
+      console.log('connected')
+    }
+
+    this.ws.onmessage = evt => {
+      // on receiving a message, add it to the list of messages
+      this.setState({
+        message: evt.data,
+      })
+    }
+
+    this.ws.onclose = () => {
+      console.log('disconnected')
+      // automatically try to reconnect on connection loss
+      this.setState({
+        ws: new WebSocket(this.props.options.wss_server),
+      })
+    }
+  }
+
+  clickButton = (e: any) => {
+    e.preventDefault();
+    this.ws.send(this.props.options.button_value)
+  }
+
+
   render() {
-    const { options, data, width, height } = this.props;
+    const { options, width, height } = this.props;
 
     return (
       <div
@@ -16,34 +54,31 @@ export class SimplePanel extends PureComponent<Props> {
           height,
         }}
       >
-        <svg
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-          }}
-          width={width}
-          height={height}
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          viewBox={`-${width / 2} -${height / 2} ${width} ${height}`}
-        >
-          <g>
-            <circle style={{ fill: '#32a852' }} r={100} />
-          </g>
-        </svg>
-
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            padding: '10px',
-          }}
-        >
-          <div>Count: {data.series.length}</div>
-          <div>{options.text}</div>
-        </div>
+        { options.button == "" &&
+          <div
+            style={{
+              fontSize: '5vw',
+              textAlign: 'center',
+            }}
+          >
+          {this.state.message}
+          </div>
+          ||
+          <div
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            <FullWidthButtonContainer>
+              <Button
+                size='lg'
+                onClick={this.clickButton}
+              >
+                {options.button}
+              </Button>
+            </FullWidthButtonContainer>
+          </div>
+        }
       </div>
     );
   }

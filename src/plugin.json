@@ -1,12 +1,12 @@
 {
   "type": "panel",
-  "name": "Simple Panel",
+  "name": "Simple WebSocket Panel",
   "id": "myorgid-simple-panel",
 
   "info": {
-    "description": "Simple React Panel",
+    "description": "Simple WebSoket panel",
     "author": {
-      "name": "Your Name"
+      "name": "Adrian Lopez"
     },
     "keywords": ["Simple"],
     "logos": {
@@ -14,8 +14,8 @@
       "large": "img/logo.svg"
     },
     "links": [
-      {"name": "Website", "url": "https://github.com/grafana/simple-react-panel"},
-      {"name": "License", "url": "https://github.com/grafana/simple-react-panel/blob/master/LICENSE"}
+      {"name": "Website", "url": "https://github.com/adrianlzt/simple-websocket-panel"},
+      {"name": "License", "url": "https://github.com/adrianlzt/simple-websocket-panel/blob/master/LICENSE"}
     ],
     "screenshots": [],
     "version": "%VERSION%",
@@ -23,7 +23,7 @@
   },
 
   "dependencies": {
-    "grafanaVersion": "6.3.x",
+    "grafanaVersion": "6.7.x",
     "plugins": []
   }
 }
