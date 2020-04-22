@@ -15,6 +15,10 @@ export class SimplePanel extends PureComponent<Props> {
   // TODO: change server dynamically when it is modified on the editor
   ws = new WebSocket(this.props.options.wss_server)
 
+  // TODO: insert audio in the plugin
+  audio = new Audio("https://bigsoundbank.com/UPLOAD/mp3/1616.mp3")
+
+
   componentDidMount() {
     this.ws.onopen = () => {
       // on connecting, do nothing but log it to the console
@@ -22,7 +26,9 @@ export class SimplePanel extends PureComponent<Props> {
     }
 
     this.ws.onmessage = evt => {
-      // on receiving a message, add it to the list of messages
+      if (this.props.options.audio) {
+        this.audio.play()
+      }
       this.setState({
         message: evt.data,
       })

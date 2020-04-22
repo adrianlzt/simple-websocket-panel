@@ -3,6 +3,7 @@ export interface SimpleOptions {
   wss_server: string;
   button: string;
   button_value: string;
+  audio: boolean;
 }
 
 export const defaults: SimpleOptions = {
@@ -10,4 +11,5 @@ export const defaults: SimpleOptions = {
   wss_server: 'http://localhost:8099',
   button: '',
   button_value: '',
+  audio: false,
 };

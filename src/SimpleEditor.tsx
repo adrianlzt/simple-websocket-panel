@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { FormField } from '@grafana/ui';
+import { FormField, Switch } from '@grafana/ui';
 import { PanelEditorProps } from '@grafana/data';
 
 import { SimpleOptions } from './types';
@@ -14,6 +14,11 @@ export class SimpleEditor extends PureComponent<PanelEditorProps<SimpleOptions>>
   onButtonValueChanged = ({ target }: any) => {
     this.props.onOptionsChange({ ...this.props.options, button_value: target.value });
   };
+  onAudioChanged = ({ target }: any) => {
+    console.log("tocado")
+    console.log(target.value)
+    this.props.onOptionsChange({ ...this.props.options, audio: !this.props.options.audio});
+  };
 
   render() {
     const { options } = this.props;
@@ -22,6 +27,7 @@ export class SimpleEditor extends PureComponent<PanelEditorProps<SimpleOptions>>
       <div className="section gf-form-group">
         <h5 className="section-heading">Config</h5>
         <FormField label="WS Server" labelWidth={6} inputWidth={25} type="text" onChange={this.onTextChanged} value={options.wss_server || ''} />
+        <Switch label="Audio on new event" checked={options.audio} onChange={this.onAudioChanged}></Switch>
         <br/>
         <span>
         Define a value for the "Button" field to change the value retrieved in the websocket channel with a Button to send a command with the content of "Button value"
